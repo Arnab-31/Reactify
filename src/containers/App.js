@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
-import Person from './Person/Person';
-import Validation from  './Validation/Validation'
+import Persons from '../components/Persons/Persons';
+import Validation from  '../components/Validation/Validation';
+import Cockpit from '../components/Cockpit/Cockpit';
+import classes from './App.css'
 
 // function App() {
 //   return (
@@ -74,42 +76,32 @@ class App extends Component {
 
   render() {
 
-    const style = {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
 
     let persons = null;
     if(this.state.showPerson){
       persons = (
         <div>
-          {
-            this.state.persons.map((person,index) => {
-              return <Person 
-                      name={person.name} 
-                      age={person.age}
-                      click = {() => this.deletePersonHandler(index)}          //alternative to binding syntax
-                      key={person.id}                                         //Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity:
-                      changed={(event)=>this.namechnangeHandler(event, person.id)}
-                    />
-            })
-          }
+          <Persons 
+            persons = {this.state.persons}
+            clicked = {this.deletePersonHandler}
+            changed = {this.namechnangeHandler}
+          />
         </div>
       )
     }
+
     return (
-      <div className="App">
-        <h1>Hi, This is a Class Component in react!</h1>
-        <p>This is really cool!</p>
-        <button style={style} onClick={this.toggleshowPerson}>Toggle Persons</button>
-        {persons}
-        <input onChange={(event)=>this.parachangeHandler(event)} placeholder="No text yet" />
-        <p>{this.state.paraLength}</p>
-        <Validation length={this.state.paraLength} />
-      </div> 
+        <div className={classes.App}>
+          <Cockpit 
+            showPersons={this.state.showPerson}
+            persons={this.state.persons}
+            clicked={this.toggleshowPerson}
+          />
+          {persons}
+          <input onChange={(event)=>this.parachangeHandler(event)} placeholder="No text yet" />
+          <p>{this.state.paraLength}</p>
+          <Validation length={this.state.paraLength} />
+        </div> 
     );
   }
 }
